@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  apache:
+    image: httpd:latest
+    volumes:
+      - ./src:/var/www/html
+      - ./docker/apache/httpd.conf:/usr/local/apache2/conf/httpd.conf
+    depends_on:
+      - php
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - 2121:80
+    volumes:
+      - ./src:/var/www/html
+      - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - apache
+
+  php:
+    image: php:8.2-fpm
+    volumes:
+      - ./src:/var/www/html
